@@ -24,7 +24,7 @@ interface BenhNhanRepository {
     @POST(value = "/api/benhnhan/update")
     fun updateInfo(
         @Part file: MultipartBody.Part?,
-        @Part("typeFile") type:String
+        @Part("profile") profile:String
     ):Observable<BaseResponse<ProfileModel>>
 
 

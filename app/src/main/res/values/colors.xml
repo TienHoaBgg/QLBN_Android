@@ -17,7 +17,13 @@
     <color name="primaryTextColor">#03A9F4</color>
     <color name="colorTextInfo">#9b9b9b</color>
 
+    <color name="colorTableHeader">#4F94CD</color>
+    <color name="colorTextTableHeader">#FFF</color>
 
+    <color name="colorTableRowOne">#FFF</color>
+    <color name="colorTextTableRowOne">#000</color>
 
+    <color name="colorTableRowTwo">#6363B8FF</color>
+    <color name="colorTextTableRowTwo">#000</color>
 
 </resources>

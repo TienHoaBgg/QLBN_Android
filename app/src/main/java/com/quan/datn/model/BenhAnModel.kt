@@ -3,8 +3,7 @@ package com.quan.datn.model
 data class BenhAnModel (
     var id : Int,
     var maBA :String?,
-    var thoiGianKhammaBA :String?,
-    var canNangmaBA : Float?,
+    var canNang : Float?,
     var nhomMau:String?,
     var nhietDo: Float?,
     var mach: Int?,
@@ -17,6 +16,7 @@ data class BenhAnModel (
     var yeuCauThem:String?,
     var chanDoanSauCung:String?,
     var huongDieuTri:String?,
+    var thoiGianKham :String?,
     var phongKham : PhongKhamModel?,
     var phongBenh: PhongBenhModel?,
     var donThuoc : MutableList<DonThuocModel>? = arrayListOf()

@@ -2,23 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.app.feng.fixtablelayout.FixTableLayout
-            android:id="@+id/fixTableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:fixtable_divider_color="@color/primaryTextColor"
-            app:fixtable_title_color="#C5CDEF"
-            app:fixtable_column_2_color="@color/browser_actions_bg_grey"
-            app:fixtable_divider_height="1dp"
-            app:fixtable_item_gravity="CENTER"
-            app:fixtable_item_top_bottom_padding="10dp"
-            app:fixtable_item_width="168dp"
-            app:fixtable_show_left_view_shadow="false"
-            />
+        <HorizontalScrollView>
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_item"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </HorizontalScrollView>
+
+    </TableLayout>
 </layout>

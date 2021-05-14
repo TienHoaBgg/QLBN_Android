@@ -3,8 +3,8 @@ package com.quan.datn.model
 data class ProfileModel (
     var id:Int,
     var maBN:String,
-    var ho:String,
-    var ten:String,
+    var hoBn:String,
+    var tenBn:String,
     var avatar:String,
     var cmnd:String,
     var ngaySinh:String,

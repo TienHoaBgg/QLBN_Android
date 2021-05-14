@@ -42,4 +42,5 @@
     <string name="viewAvatar">Xem ảnh</string>
     <string name="chooseImageLibrary">Chọn ảnh mới</string>
     <string name="not_permission">Ứng dụng chưa được cấp quyền truy cập file</string>
+    <string name="update_profile_success">Cập nhật thông tin thành công</string>
 </resources>

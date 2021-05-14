@@ -1,5 +1,7 @@
 package com.quan.datn.ui.utils
 
+import com.quan.datn.common.Constants
+
 object StringUtils {
 
     fun String?.isNotNullOrEmpty(f: (it: String) -> Unit) {
@@ -7,6 +9,19 @@ object StringUtils {
             f(this)
         }
     }
+
+    fun String?.toLink():String {
+        return if (this != null && this != "") {
+            if (this.contains("http") || this.contains("https")){
+                this
+            }else{
+                Constants.BASE_URL + this
+            }
+        }else{
+            Constants.BASE_URL
+        }
+    }
+
 
     fun isNotBlank(vararg contents: String?): Boolean {
         for (content in contents) {

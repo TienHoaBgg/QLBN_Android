@@ -100,5 +100,5 @@ dependencies {
 
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation('com.github.TienHoaBgg:FilePicker-Android:v1.0')
-    implementation 'com.evrencoskun.library:tableview:0.8.9.4'
+
 }

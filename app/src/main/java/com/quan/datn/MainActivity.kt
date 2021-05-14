@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private var currentTag:String = ""
-
+    private lateinit var headerBinding:NavHeaderMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val headerBinding = NavHeaderMainBinding.bind(binding.navView.getHeaderView(0))
+        headerBinding = NavHeaderMainBinding.bind(binding.navView.getHeaderView(0))
         headerBinding.profile = DataManager.getInfoSessionLogin(this)
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             fragmentContent = R.id.main_view
         )
     }
+
+    public fun updateInfoBenhNhan(){
+        headerBinding.profile = DataManager.getInfoSessionLogin(this)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)

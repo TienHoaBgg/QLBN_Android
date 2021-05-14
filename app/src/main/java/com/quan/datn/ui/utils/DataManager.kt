@@ -30,7 +30,7 @@ object DataManager {
         return null
     }
 
-    fun saveSessionLogin(context: Context,profile:ProfileModel){
+    fun saveSessionLogin(context: Context, profile:ProfileModel){
         val sharedPreferences = context.getSharedPreferences("data_datn", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("INFO_BN", Gson().toJson(profile))

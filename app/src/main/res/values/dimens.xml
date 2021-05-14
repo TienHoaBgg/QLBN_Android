@@ -6,4 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="textSizeLogoApp">98sp</dimen>
+
+    <dimen name="textSizeTableHeader">17sp</dimen>
+    <dimen name="textSizeTableRow">15sp</dimen>
+
 </resources>

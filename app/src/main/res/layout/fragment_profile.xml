@@ -54,7 +54,7 @@
 
                 <EditText
                     android:id="@+id/txt_Ho"
-                    updateText="@{profile.ho}"
+                    updateText="@{profile.hoBn}"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
@@ -67,7 +67,7 @@
 
                 <EditText
                     android:id="@+id/txt_Ten"
-                    updateText="@{profile.ten}"
+                    updateText="@{profile.tenBn}"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"

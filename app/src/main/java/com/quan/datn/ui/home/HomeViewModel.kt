@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.quan.datn.model.BenhAnModel
+import com.quan.datn.model.ProfileModel
 import com.quan.datn.model.remote.ApiHelp
 import com.quan.datn.model.repository.BenhNhanRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,7 +31,6 @@ class HomeViewModel : ViewModel() {
                     it.printStackTrace()
                 }
             )
-
     }
 
 }

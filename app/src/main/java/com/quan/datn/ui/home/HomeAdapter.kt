@@ -1,62 +1,108 @@
 package com.quan.datn.ui.home
 
-import android.widget.TextView
-import com.app.feng.fixtablelayout.inter.IDataAdapter
-import com.quan.datn.model.BenhAnModel
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.quan.datn.databinding.ItemHeaderBinding
+import com.quan.datn.databinding.ItemTableRowOneBinding
+import com.quan.datn.databinding.ItemTableRowTwoBinding
 
 
-class HomeAdapter : IDataAdapter {
+class HomeAdapter : RecyclerView.Adapter<HomeAdapter.Companion.ViewHolder> {
 
-    var dsBenhAn: MutableList<BenhAnModel> = arrayListOf()
-    var titles:Array<String> = arrayOf("Mã BA","Lý do khám","Tình trạng hiện tại","Chẩn đoán sơ bộ",
-        "Yêu cầu thêm","Chẩn đoán sau cùng","Hướng điều trị","Mạch","Huyết áp")
+    var inter:IHomeAdapter? = null
 
-    constructor(data: MutableList<BenhAnModel>){
-        this.dsBenhAn = data
+    constructor(inter:IHomeAdapter){
+        this.inter = inter
     }
 
-    override fun getTitleAt(pos: Int): String {
-        return titles[pos]
+    companion object {
+        class ViewHolder : RecyclerView.ViewHolder {
+            var itemHeaderBinding : ItemHeaderBinding ?= null
+
+            constructor(binding: ItemHeaderBinding) : super(binding.root){
+                itemHeaderBinding = binding
+            }
+
+            var itemTableRowOneBinding:ItemTableRowOneBinding ?= null
+
+            constructor(binding: ItemTableRowOneBinding) : super(binding.root){
+                itemTableRowOneBinding = binding
+            }
+
+            var itemTableRowTwoBinding:ItemTableRowTwoBinding ?= null
+
+            constructor(binding: ItemTableRowTwoBinding) : super (binding.root){
+                itemTableRowTwoBinding = binding
+            }
+
+        }
     }
 
-    override fun getTitleCount(): Int {
-        return titles.size
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: ViewDataBinding
+        return when (viewType) {
+            0 -> {
+                binding = ItemHeaderBinding.inflate(inflater, parent, false)
+                ViewHolder(binding)
+            }
+            else -> {
+                if (viewType % 2 == 0){
+                    binding = ItemTableRowTwoBinding.inflate(inflater, parent, false)
+                    ViewHolder(binding)
+                }else{
+                    binding = ItemTableRowOneBinding.inflate(inflater, parent, false)
+                    ViewHolder(binding)
+                }
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (holder.itemViewType == 0){
+            val binding = holder.itemHeaderBinding
+            binding?.executePendingBindings()
+        }else{
+            if (holder.itemViewType % 2 == 0){
+                val binding = holder.itemTableRowTwoBinding
+                if (binding != null){
+                    binding.benhAn = inter?.getModel()?.dsBenhAn?.value!![position - 1]
+                    binding.onClickRow.setOnClickListener {
+                        inter?.onClickItem(position - 1,binding.onClickRow)
+                    }
+                    binding.executePendingBindings()
+                }
+            }else{
+                val binding = holder.itemTableRowOneBinding
+                if (binding != null){
+                    binding.benhAn = inter?.getModel()?.dsBenhAn?.value!![position - 1]
+                    binding.onClickRow.setOnClickListener {
+                        inter?.onClickItem(position - 1,binding.onClickRow)
+                    }
+                    binding.executePendingBindings()
+                }
+                binding?.executePendingBindings()
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return dsBenhAn.size
+        return if (inter?.getModel()?.dsBenhAn?.value == null)
+            1
+        else
+            inter?.getModel()?.dsBenhAn?.value!!.size + 1
     }
 
-    override fun convertData(position: Int, bindViews: List<TextView>) {
-        val dataBean: BenhAnModel = dsBenhAn[position]
-        bindViews[0].text = dataBean.id.toString()
-        bindViews[1].text = dataBean.maBA
-        bindViews[2].text = dataBean.lyDoKham
-        bindViews[3].text = dataBean.tinhTrangHT
-        bindViews[4].text = dataBean.chanDoanSoBo
-        bindViews[5].text = dataBean.yeuCauThem
-        bindViews[6].text = dataBean.chanDoanSauCung
-        bindViews[7].text = dataBean.huongDieuTri
+    interface IHomeAdapter {
+        fun onClickItem(position: Int,view:View)
+        fun getModel():HomeViewModel
     }
-//    var maBA :String?,
-//    var thoiGianKhammaBA :String?,
-//    var canNangmaBA : Float?,
-//    var nhomMau:String?,
-//    var nhietDo: Float?,
-//    var mach: Int?,
-//    var huyetAp: Int?,
-//    var nhipTho: Int?,
-//    var lyDoKham:String?,
-//    var tinhTrangHT:String?,
-//    var benhSu:String?,
-//    var chanDoanSoBo:String?,
-//    var yeuCauThem:String?,
-//    var chanDoanSauCung:String?,
-//    var huongDieuTri:String?,
-//    var phongKham : PhongKhamModel?,
-//    var phongBenh: PhongBenhModel?,
-//    var donThuoc : MutableList<DonThuocModel>? = arrayListOf()
-    override fun convertLeftData(position: Int, bindView: TextView) {
-//    bindView.text = dsBenhAn[position].id.toString()
-    }
+
 }
