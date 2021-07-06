@@ -28,43 +28,49 @@ class SplashActivity : AppCompatActivity() , SplashCallBack{
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         viewModel.callBack = this
         mAuth = FirebaseAuth.getInstance()
-        if (DataManager.getPhoneLogin(this).isNotBlank()){
+        if (mAuth?.currentUser != null && DataManager.getPhoneLogin(this).isNotBlank()){
             viewModel.getInfoBenhNhan(this)
         }else{
-            checkLogin()
+            pushToLogin()
         }
     }
 
-    private fun checkLogin() {
-        if (mAuth?.currentUser != null && DataManager.getPhoneLogin(this).isNotBlank()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(
-                    android.R.anim.slide_out_right,
-                    android.R.anim.slide_in_left
-                )
-                finish()
-            }, 200)
-        } else {
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(
-                    android.R.anim.slide_out_right,
-                    android.R.anim.slide_in_left
-                )
-                finish()
-            }, 500)
-        }
+    private fun pushToMain(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(
+                android.R.anim.slide_out_right,
+                android.R.anim.slide_in_left
+            )
+            finish()
+        }, 200)
+    }
+
+    private fun pushToLogin(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            FirebaseAuth.getInstance().signOut()
+            DataManager.removeLoginSession(this)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(
+                android.R.anim.slide_out_right,
+                android.R.anim.slide_in_left
+            )
+            finish()
+        }, 200)
     }
 
     override fun error(message: String?) {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
     }
 
+    override fun loginFalse() {
+        pushToLogin()
+    }
+
     override fun success() {
-        checkLogin()
+        pushToMain()
     }
 
 }

@@ -15,6 +15,11 @@ interface BenhNhanRepository {
         @Query("phoneNumber") phoneNumber:String
     ): Observable<BaseResponse<ProfileModel>>
 
+    @GET(value = "/api/benhnhan/check-phone-number")
+    fun checkPhoneNumber(
+        @Query("phoneNumber") phoneNumber:String
+    ): Observable<BaseResponse<String>>
+
     @GET(value = "/api/benhan/all-benh-an")
     fun getBenhAn(
         @Query("phoneNumber") phoneNumber:String
@@ -26,6 +31,5 @@ interface BenhNhanRepository {
         @Part file: MultipartBody.Part?,
         @Part("profile") profile:String
     ):Observable<BaseResponse<ProfileModel>>
-
 
 }

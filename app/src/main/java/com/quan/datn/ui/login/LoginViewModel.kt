@@ -1,10 +1,7 @@
-package com.quan.datn.ui.splash
+package com.quan.datn.ui.login
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import com.quan.datn.model.remote.ApiHelp
 import com.quan.datn.model.repository.BenhNhanRepository
 import com.quan.datn.ui.utils.DataManager
@@ -14,10 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class SplashViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
 
-    val isLoading = MutableLiveData(false)
-    var callBack:SplashCallBack? = null
+    var callBack: LoginCallBack? = null
 
     private val repository: BenhNhanRepository =
         ApiHelp.createRetrofit().create(BenhNhanRepository::class.java)
@@ -28,15 +24,32 @@ class SplashViewModel : ViewModel() {
             .subscribe(
                 {
                     if (it.status == 200 && it.data != null) {
-                        DataManager.saveSessionLogin(content, it.data!!)
-                        callBack?.success()
+                        Observable.create((ObservableOnSubscribe<Boolean> { _ ->
+                            DataManager.saveSessionLogin(content, it.data!!)
+                        })).subscribeOn(Schedulers.newThread()).subscribe()
+                        callBack?.getInfoSuccess()
                     } else {
-                        callBack?.loginFalse()
                         callBack?.error(it.message)
                     }
                 }, {
                     it.printStackTrace()
-                    callBack?.loginFalse()
+                    callBack?.error(it.localizedMessage)
+                }
+            )
+    }
+
+    fun checkPhoneNumber(phoneNumber: String): Disposable {
+        return repository.checkPhoneNumber(phoneNumber)
+            .subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    if (it.status == 200) {
+                        callBack?.phoneNumberNotExists(phoneNumber)
+                    } else {
+                        callBack?.error(it.message)
+                    }
+                }, {
+                    it.printStackTrace()
                     callBack?.error(it.localizedMessage)
                 }
             )
