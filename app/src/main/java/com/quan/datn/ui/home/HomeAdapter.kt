@@ -5,9 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.quan.datn.databinding.ItemHeaderBinding
-import com.quan.datn.databinding.ItemTableRowOneBinding
-import com.quan.datn.databinding.ItemTableRowTwoBinding
+import com.quan.datn.databinding.*
 
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.Companion.ViewHolder> {
@@ -20,24 +18,17 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.Companion.ViewHolder> {
 
     companion object {
         class ViewHolder : RecyclerView.ViewHolder {
-            var itemHeaderBinding : ItemHeaderBinding ?= null
+            var itemHeaderBinding : ItemHeaderHistoryBinding ?= null
 
-            constructor(binding: ItemHeaderBinding) : super(binding.root){
+            constructor(binding: ItemHeaderHistoryBinding) : super(binding.root){
                 itemHeaderBinding = binding
             }
 
-            var itemTableRowOneBinding:ItemTableRowOneBinding ?= null
+            var itemRowHistoryBinding:ItemRowHistoryBinding ?= null
 
-            constructor(binding: ItemTableRowOneBinding) : super(binding.root){
-                itemTableRowOneBinding = binding
+            constructor(binding: ItemRowHistoryBinding) : super(binding.root){
+                itemRowHistoryBinding = binding
             }
-
-            var itemTableRowTwoBinding:ItemTableRowTwoBinding ?= null
-
-            constructor(binding: ItemTableRowTwoBinding) : super (binding.root){
-                itemTableRowTwoBinding = binding
-            }
-
         }
     }
 
@@ -50,17 +41,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.Companion.ViewHolder> {
         val binding: ViewDataBinding
         return when (viewType) {
             0 -> {
-                binding = ItemHeaderBinding.inflate(inflater, parent, false)
+                binding = ItemHeaderHistoryBinding.inflate(inflater, parent, false)
                 ViewHolder(binding)
             }
             else -> {
-                if (viewType % 2 == 0){
-                    binding = ItemTableRowTwoBinding.inflate(inflater, parent, false)
-                    ViewHolder(binding)
-                }else{
-                    binding = ItemTableRowOneBinding.inflate(inflater, parent, false)
-                    ViewHolder(binding)
-                }
+                binding = ItemRowHistoryBinding.inflate(inflater, parent, false)
+                ViewHolder(binding)
             }
         }
     }
@@ -69,27 +55,16 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.Companion.ViewHolder> {
         if (holder.itemViewType == 0){
             val binding = holder.itemHeaderBinding
             binding?.executePendingBindings()
-        }else{
-            if (holder.itemViewType % 2 == 0){
-                val binding = holder.itemTableRowTwoBinding
-                if (binding != null){
-                    binding.benhAn = inter?.getModel()?.dsBenhAn?.value!![position - 1]
-                    binding.onClickRow.setOnClickListener {
-                        inter?.onClickItem(position - 1,binding.onClickRow)
-                    }
-                    binding.executePendingBindings()
+        } else {
+            val binding = holder.itemRowHistoryBinding
+            if (binding != null) {
+                binding.benhAn = inter?.getModel()?.dsBenhAn?.value!![position - 1]
+                binding.stt.text = "${position - 1}"
+                binding.onClickRow.setOnClickListener {
+                    inter?.onClickItem(position - 1, binding.onClickRow)
                 }
-            }else{
-                val binding = holder.itemTableRowOneBinding
-                if (binding != null){
-                    binding.benhAn = inter?.getModel()?.dsBenhAn?.value!![position - 1]
-                    binding.onClickRow.setOnClickListener {
-                        inter?.onClickItem(position - 1,binding.onClickRow)
-                    }
-                    binding.executePendingBindings()
-                }
-                binding?.executePendingBindings()
             }
+            binding?.executePendingBindings()
         }
     }
 

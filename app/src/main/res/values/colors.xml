@@ -26,4 +26,6 @@
     <color name="colorTableRowTwo">#6363B8FF</color>
     <color name="colorTextTableRowTwo">#000</color>
 
+    <color name="colorTextTitle">#1b82d2</color>
+
 </resources>

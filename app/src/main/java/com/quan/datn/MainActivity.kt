@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import com.quan.datn.databinding.ActivityMainBinding
 import com.quan.datn.databinding.NavHeaderMainBinding
 import com.quan.datn.ui.dialog.ConfirmDialog
@@ -39,8 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         headerBinding = NavHeaderMainBinding.bind(binding.navView.getHeaderView(0))
         headerBinding.profile = DataManager.getInfoSessionLogin(this)
+        this.setTitle("Lịch sử khám bệnh")
         setSupportActionBar(binding.appBarMain.toolbar)
-
         drawerToggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,
@@ -61,10 +62,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
     }
 
-    public fun updateInfoBenhNhan(){
-        headerBinding.profile = DataManager.getInfoSessionLogin(this)
+    fun setTitle(title:String){
+        binding.appBarMain.toolbar.title = title
     }
 
+    fun updateInfoBenhNhan(){
+        headerBinding.profile = DataManager.getInfoSessionLogin(this)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -85,16 +89,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         onHideKeyBoard()
         when (item.itemId) {
             R.id.nav_home -> {
-                hideFragment(supportFragmentManager,currentTag)
+                this.setTitle("Lịch sử khám bệnh")
+                hideFragment(supportFragmentManager, currentTag)
                 currentTag = HomeFragment::class.java.name
                 openFragment(
                     supportFragmentManager,
                     HomeFragment::class.java,
                     fragmentContent = R.id.main_view
                 )
+
             }
 
             R.id.nav_profile -> {
+                this.setTitle("Thông tin cá nhân")
                 hideFragment(supportFragmentManager,currentTag)
                 currentTag = ProfileFragment::class.java.name
                 openFragment(
@@ -141,24 +148,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-//        onHideKeyBoard()
-//        return super.dispatchTouchEvent(ev)
-//    }
-
     companion object {
 
         @JvmStatic
         fun openFragment(
             manager: FragmentManager,
             clazz: Class<out Fragment>,
-            fragmentContent: Int
+            fragmentContent: Int,
+            data:Any ?= null
         ): Fragment? {
             val tag = clazz.name
             var fragment: Fragment?
             val transaction = manager.beginTransaction()
             try {
                 fragment = manager.findFragmentByTag(tag)
+                if (data != null) {
+                    val bundle = Bundle()
+                    bundle.putString("DATA_SENDER", Gson().toJson(data))
+                    fragment?.arguments = bundle
+                }
                 if (fragment == null || !fragment.isAdded) {
                     fragment = clazz.newInstance()
                     transaction.add(fragmentContent, fragment, tag)
